@@ -1,24 +1,13 @@
-const http = require('http');
 const dotenv = require('dotenv');
+const userRouter = require('./src/user-router');
+const jsonPars = require('./framework/parseJson')
 dotenv.config();
-
 const PORT = process.env.PORT || 3000;
-class Router {
-    constructor() {
-        this.endpoints = {}
-    }
-    request(method = "GET", path,handler) {
-        if(!this.endpoints[path]) {
-            this.endpoints[path] = {}
-        }
-    }
-}
+const Application =require('./framework/Application');
+const parseUrl = require('./framework/parseUrl');
 
-const server = http.createServer((req, res) => {
- 
+const app = new Application();
+app.use(parseUrl('htpp://localhost:5000'));
+app.addRouter(userRouter); 
+app.listen(PORT, () => console.log(`START SERVER PORT ${PORT}`));
 
-    res.end(req.url)
-
-})
-
-server.listen(PORT, () => console.log(`START SERVER PORT ${PORT}`))
