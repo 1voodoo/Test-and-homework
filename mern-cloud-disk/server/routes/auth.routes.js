@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const config = require('config');
 const {check, validationResult} = require("express-validator");
 const jwt = require("jsonwebtoken");
+const authModdleware = require('../middleware/auth.middleware')
 
 router.post('/registartion',
     [
@@ -68,6 +69,28 @@ router.post('/login',
         console.log(e);
         res.send({massage: "Server error" })
     }
+})
+
+router.get('/auth', authModdleware,
+   
+    async (req, res) => {
+        try {
+            const user = await User.findOne({_id: req.user.id})
+            const token = jwt.sign({id: user.id}, config.get("secretKey"), {expiresIn: "1h"})
+            return res.json({
+                token,
+                user: {
+                    id: user.id,
+                    email: user.email,
+                    diskSpace: user.diskSpace,
+                    usedSpace: user.usedSpace,
+                    avatar: user.avatar
+                }
+            })
+        } catch (e) {
+            console.log(e);
+            res.send({massage: "Server error" })
+        }
 })
 
 module.exports = router;
