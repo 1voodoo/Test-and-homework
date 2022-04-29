@@ -1,12 +1,21 @@
 <script>
- import ChildComp from './ChildComp.vue'
+  import ChildComp from './views/ChildComp.vue'
+  import router from './router';
   let id = 0;
+   
  export default {
   components: {
     ChildComp
   },
+  props: {
+    msg: String
+  },
   data() {
     return {
+      arrMassiv: ["101", "222", "303", "4334", "5555", "6600", "7007", "8008"],
+      nextToMe: 'lesson',
+      arrBooks: [101, 2, 3, 1000, 8],
+      greeting: 'Hello from parent',
       todoId: 1,
       todoData: null,
       btnClass: 'btn',
@@ -37,10 +46,16 @@
         { id: id++, text: 'Learn HTML', done: false },
         { id: id++, text: 'Learn JavaScript', done: false },
         { id: id++, text: 'Learn Vue', done: false  }
-      ], 
+      ],
+      data: {
+        num1: 1,
+        num2: 2,
+        message1: "HI",
+      }, 
     }
   },
   computed: {
+
     filteredTodos() {
       return this.hideCompleted
         ? this.todos.filter((t) => !t.done)
@@ -57,6 +72,40 @@
     }
   },
   methods: {
+    deletLione(lol) {
+      console.log(lol);
+     console.log(this.arrMassiv = this.arrMassiv.map(item => {
+       console.log(item);
+       if (item === lol) {
+         item + "!"
+       }
+     }))
+
+    },
+    showMethodBtn(massage) {
+      alert(massage);
+    },
+    nextToMeChange() {
+      this.nextToMe = this.nextToMe.slice(0, 1).toUpperCase() + this.nextToMe.slice(1, length -1) + this.nextToMe.slice(-1).toUpperCase();
+    },
+    ReverstLi() {
+      // this.arrBooks.reverse();
+      this.arrBooks = this.arrBooks.filter(t => t > 0 && t < 10)
+      // filter(item => item > 0 && item < 10)
+    },
+    DeletLi() {
+      this.arrBooks.splice(0, 1)
+      console.log(this.arrBooks[0]);
+    },
+    addLI() {
+      this.arrBooks.push(11);
+    },
+    massageLast111() {
+      this.data.message1 = 'пока'
+    },
+    show() {
+      alert(this.data.num1 + this.data.num2);
+    },
     increment() {
       this.count++
     },
@@ -130,6 +179,27 @@
   <button @click="todoId--">Fetch previos todo</button>
   <p v-if="!todoData">Loading...</p>
   <pre v-else>{{ todoData }}</pre>
+  <ChildComp :msg="greeting" />
+  <p>{{data.num1 + data.num2}}</p>
+  <button @click="show">show</button>
+  <p>{{this.data.message1}}</p>
+  <button @click="massageLast111" >massge</button>
+  <ul>
+    <li v-for="(item, index) in arrBooks" :key="index">{{ item }} + {{index}}</li>
+    <button @click="addLI">AddLi</button>
+    <button @click="DeletLi">DeletLi</button>
+    <button @click="ReverstLi">ReversLi</button>
+  </ul>
+  <p>{{nextToMe}}</p>
+  <button @click="nextToMeChange">Change</button>
+  <button @click="showMethodBtn('Hello')">Hello</button>
+  <button @click="showMethodBtn('Buy')">Buy</button>
+  <ul>
+    <li v-for="(lol, index) in arrMassiv" :key="index" >
+      {{lol}}
+      <button @click="deletLione(lol)">x</button>
+    </li>
+  </ul>
 </template>
 
 <style>
