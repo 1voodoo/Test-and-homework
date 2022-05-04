@@ -1,6 +1,5 @@
 <script>
   import ChildComp from './views/ChildComp.vue'
-  import router from './router';
   let id = 0;
    
  export default {
