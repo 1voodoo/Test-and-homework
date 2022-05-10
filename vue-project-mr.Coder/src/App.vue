@@ -25,9 +25,32 @@ export default {
       lol2: "",
       o: [],
       show123: false,
-      checked: true,
+      checked: false,
       lang: [],
-
+      type: "",
+      selected: '',
+      option: ['Минск', 'Moscow', 'Kiev'],
+      str101: 'Игорь Белозор',
+      isDisabled: true,
+      lol: 'www',
+      isActive: true,
+      isValid: false,
+      checked101: false,
+      textTepritche: null,
+      robotNumber: Math.floor(Math.random() * 100),
+      textGame: '',
+      arrName: [
+        {name: 'Коля', active: true},
+        {name: 'Вася', active: true},
+        {name: 'Петя', active: false},
+      ],
+      NameUser: '',
+      ProductAppl: [
+        {name: 'product1', price: 100, quantity: 4},
+        {name: 'product2', price: 200, quantity: 5},
+        {name: 'product3', price: 300, quantity: 6},
+      ],
+      initialValue: '',
     } 
   },
   methods: {
@@ -79,6 +102,33 @@ export default {
       this.show123 = true
       this.lol = ''
     },
+    check101() {
+      isDisabled = false
+    },
+    inputTemritche(e) {
+      this.textTepritche =  e.target.value 
+      if(Number(this.textTepritche) > Number(this.robotNumber)) {
+        this.textGame = 'Число меньше'
+        
+      }
+      if(Number(this.textTepritche) < Number(this.robotNumber)) {
+        this.textGame = 'Число больше'
+      }
+      if(Number(this.textTepritche) === Number(this.robotNumber)) {
+        this.textGame = 'Вы выйграли'
+      }
+    },
+    UserName(e) {
+      this.NameUser = e.target.value
+      console.log(this.NameUser);
+      
+    },
+    AddUser() {
+      this.arrName.push({name: this.NameUser, active: true})
+      console.log(this.ProductAppl);
+      this.initialValue = this.ProductAppl.map(item => item.price * item.quantity)
+      
+    }
   }
 } 
 </script>
@@ -148,18 +198,92 @@ export default {
     <input type="checkbox" v-model="lang" value="js">
     <p>Содержимое массива: {{ lang }}</p>
 
-    <input type="checkbox" v-model="lang" value="xnj ssdls;l">
-    <p>{{ lang }}</p>
+    <input type="checkbox" v-model="lang" value="js 2.0" >
+    <p>{{ checked ? 'Yes' : 'No' }}</p>
+    <ul>
+      <li>
+        {{ lang }}
+      </li>
+    </ul>
+    <input name="radio" type="radio" v-model="type" value="Привет">
+    <input name="radio" type="radio" v-model="type" value="Hello ">
+    <input name="radio" type="radio" v-model="type" value="iiiiiiii">
+    <p>{{ type }}</p>
+    <p>в каком городе вы живете</p>
+    <select v-model="selected">
+		<option v-for="city in option" :key="city">{{ city }} </option>
+	  </select>
+	  <p>Вы выбрали: {{ selected }}</p>
+    <p v-bind:id="str101">pop</p>
+    <input v-bind:disabled="!checked" type="text">
+    <input  type="checkbox" v-model="checked">
+    <button class="btnRed" @click="isDisabled = !isDisabled">
+      {{isDisabled ? 'Нет доступа к инпуту' : 'Есть доступа к инпуту' }}
+    </button>
+    <p v-bind:class="lol">Привет</p>
+    <p @click="isActive = !isActive" v-bind:class="{active: isActive}">Абзац</p>
+    <button @click="isActive = !isActive">Change</button>
+    <p v-bind:class="{valid: isValid, invalid: !isValid}">LOLOPPPPLPLPL</p>
+    <button @click="isValid = !isValid">opopqopoqpeoqpweop</button>
+    <input type="checkbox" v-model="checked101">
+    <p v-bind:class="{reding: checked101, blaking: !checked101}" >lol</p>
+    <input @input="inputTemritche" type="number" :value="textTepritche" placeholder="число от 0 до 100">
+    <p>{{ textGame }}</p>
+    <ul v-for="person in arrName" :key="person.name">
+      <li v-bind:class="{plusperson: person.active, disPerson: !person.active}">{{person.name}}</li>
+      <button @click="person.active = !person.active">change</button>
+    </ul>
+    <input type="text" :value="NameUser" @input="UserName">
+    <button @click="AddUser">addUser</button>
+    <table>
+      <tr >
+        <td v-for="item in ProductAppl" :key="item">{{item.name}}</td>
+      </tr>
+      <tr>
+        <td v-for="item in ProductAppl" :key="item">{{item.price}}$</td>
+      </tr>
+      <tr>
+        <td v-for="item in ProductAppl" :key="item">{{item.quantity}} кол-во</td>
+      </tr>
+      <tr>
+        <td v-for="item in ProductAppl" :key="item">{{item.price * item.quantity}}$ сумма</td>
+      </tr>
+    </table>
+    <p>{{}}</p>
+    <p>{{ initialValue }}</p>
   </div> 
-  
-</template>
 
+</template>
 
 <style>
 * {
   margin: 0;
   padding: 0;
   
+}
+table, th, td {
+  border: 1px solid black;
+}
+.plusperson {
+  color: rgb(8, 243, 51);
+}
+.disPerson {
+  color: red;
+}
+.reding {
+  background-color: brown;
+}
+.blaking {
+  background: black;
+}
+.invalid {
+  color: brown;
+}
+.active {
+  color: red;
+}
+.www {
+  color: rgb(11, 245, 93);
 }
 .page {
   display: flex;
@@ -169,6 +293,17 @@ export default {
 }
 .contaynerBtn {
   display: flex;
+}
+.btnRed {
+  width: 200px;
+  border: 1px solid rgb(255, 85, 0);
+  background: none;
+  color: black;
+  font-size: 15px;
+  padding: 10px;
+}
+.btnRed:hover {
+  background: rgb(126, 130, 123)
 }
 .btn {
   width: 20px;
