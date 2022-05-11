@@ -50,7 +50,23 @@ export default {
         {name: 'product2', price: 200, quantity: 5},
         {name: 'product3', price: 300, quantity: 6},
       ],
+      userAiphone: [
+        {name: 'Коля', age: 30},
+        {name: 'Вася', age: 40},
+        {name: 'Петя', age: 50},
+      ],
+      newProduct: [],
       initialValue: '',
+      nameProduct: '',
+      priceProduct: null,
+      quantityProduct: null,
+      initialValueNew: '',
+      buttonDis: true,
+      showinput: true,
+      changeNameArr: '',
+      changeAgeArr: null,
+      priceHidden: true,
+      priceNumberInput: "", 
     } 
   },
   methods: {
@@ -107,28 +123,104 @@ export default {
     },
     inputTemritche(e) {
       this.textTepritche =  e.target.value 
+      console.log(this.robotNumber);
       if(Number(this.textTepritche) > Number(this.robotNumber)) {
         this.textGame = 'Число меньше'
         
       }
       if(Number(this.textTepritche) < Number(this.robotNumber)) {
         this.textGame = 'Число больше'
+        
       }
       if(Number(this.textTepritche) === Number(this.robotNumber)) {
         this.textGame = 'Вы выйграли'
+        this.robotNumber = Math.floor(Math.random() * 100)
+        this.textTepritche = ''
       }
     },
     UserName(e) {
       this.NameUser = e.target.value
-      console.log(this.NameUser);
       
     },
     AddUser() {
-      this.arrName.push({name: this.NameUser, active: true})
-      console.log(this.ProductAppl);
+      if(this.NameUser !== '') {
+        this.arrName.push({name: this.NameUser, active: true})
+        this.NameUser = ""
+      }
       this.initialValue = this.ProductAppl.map(item => item.price * item.quantity)
+      this.initialValue = this.initialValue.reduce((previousValue, currentValue) => previousValue + currentValue)
+    },
+    nameProductfunc(e) {
+      this.nameProduct = e.target.value 
+    },
+    priceProductfunc(e) {
+      this.priceProduct = e.target.value 
+    },
+    quantityProductfunc(e) {
+      this.quantityProduct = e.target.value
+      if (this.nameProduct || this.priceProduct || this.quantityProduct === '') {
+        this.buttonDis = true
+      }
+      if (this.nameProduct && this.priceProduct && this.quantityProduct !== '') {
+        this.buttonDis = false
+      }
+    },
+    AddProductList() {
+        this.newProduct.push({name: this.nameProduct, price: this.priceProduct, quantuty: this.quantityProduct})
+        this.initialValueNew = this.newProduct.map(item => item.price * item.quantuty)
+        this.initialValueNew = this.initialValueNew.reduce((previousValue, currentValue) => previousValue + currentValue)
+        this.nameProduct = ''
+        this.priceProduct = null
+        this.quantityProduct = ''
+        this.buttonDis = true 
+        console.log(this.newProduct);
       
-    }
+    },
+    deletProduct(item) {
+      this.newProduct = this.newProduct.filter(t => t !== item)
+    },
+    changeItem() {
+      console.log('push');
+    },
+    chsngUserInfo(user) {
+      this.showinput = false
+      this.changeNameArr = user.name
+      this.changeAgeArr = user.age
+      console.log(user);
+      console.log(this.changeNameArr);
+      console.log(this.changeAgeArr);
+      //  this.userAiphone[{name: 'Коля', age: 30},{name: 'Вася', age: 40},{name: 'Петя', age: 50}]
+    },
+    changeNameArrFunc(e) {
+      this.changeNameArr = e.target.value
+      console.log(this.changeNameArr);
+    },
+    changeAgeArrFunc(e) {
+      this.changeAgeArr = e.target.value
+      console.log(this.changeAgeArr);
+    },
+    changeInfoUserArr() {
+      this.userAiphone.find(t => t.name = this.changeNameArr)
+      this.userAiphone.find(t => t.age = this.changeAgeArr)
+       console.log(this.userAiphone);
+      this.showinput = true
+    },
+    DeletUserInfo(user) {
+     this.userAiphone =  this.userAiphone.filter(t => t !== user)
+    },
+    priceClick(item, index) {
+      // this.newProduct.map(t => t.price = this.priceNumberInput)
+      // item.price = this.priceNumberInput
+      this.priceNumberInput = item.price 
+      console.log(item.price);
+      this.priceHidden = false
+    },
+    priceNumberFunc(e) {
+      this.priceNumberInput = e.target.value
+      console.log(this.priceNumberInput);
+      console.log(this.newProduct);
+    },
+    
   }
 } 
 </script>
@@ -236,7 +328,7 @@ export default {
     <input type="text" :value="NameUser" @input="UserName">
     <button @click="AddUser">addUser</button>
     <table>
-      <tr >
+      <tr>
         <td v-for="item in ProductAppl" :key="item">{{item.name}}</td>
       </tr>
       <tr>
@@ -249,8 +341,38 @@ export default {
         <td v-for="item in ProductAppl" :key="item">{{item.price * item.quantity}}$ сумма</td>
       </tr>
     </table>
-    <p>{{}}</p>
-    <p>{{ initialValue }}</p>
+    <p>Total {{ initialValue }}$</p>
+    <table>
+      <tr>
+        <td @click="changeItem" v-for="item in newProduct" :key="item">{{item.name}}</td>
+      </tr>
+       <tr>
+        <td @click="priceClick(item, index)" v-for="(item, index) in newProduct" :key="item">price <input type="number" :value="priceNumberInput" @input="priceNumberFunc" v-bind:hidden="priceHidden"> {{item.price}}$</td>
+      </tr>
+      <tr>
+        <td v-for="item in newProduct" :key="item">{{item.quantuty}} кол-во</td>
+      </tr>
+      <tr>
+        <td v-for="item in newProduct" :key="item">{{item.price * item.quantuty}}$ сумма</td>
+      </tr>
+      <tr>
+        <button @click="deletProduct(item)" v-for="item in newProduct" :key="item">Удалить</button>
+      </tr>
+    </table>
+    <p>Total {{ initialValueNew }} $</p>
+    <input type="text" placeholder="name product" :value="nameProduct" @input="nameProductfunc">
+    <input type="number" placeholder="price product" :value="priceProduct" @input="priceProductfunc">
+    <input type="number" placeholder="quantity product" :value="quantityProduct" @input="quantityProductfunc">
+    <button v-bind:disabled="buttonDis" @click="AddProductList">{{buttonDis ? 'введите данные в таблицу' : 'Add Product'}}</button>
+    <ul>
+      <li v-for="(user, index) in userAiphone" :key="index">{{user.name}} {{user.age}}
+        <button @click="chsngUserInfo(user)">Change</button>
+        <button @click="DeletUserInfo(user)">X</button>
+      </li>
+    </ul>
+      <input v-bind:hidden="showinput" type="text" :value="changeNameArr" @input="changeNameArrFunc">
+      <input v-bind:hidden="showinput" type="number" :value="changeAgeArr" @input="changeAgeArrFunc">
+      <button @click="changeInfoUserArr" v-bind:hidden="showinput">add change</button>
   </div> 
 
 </template>
@@ -262,6 +384,7 @@ export default {
   
 }
 table, th, td {
+  padding: 5px;
   border: 1px solid black;
 }
 .plusperson {
