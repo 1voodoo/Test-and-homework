@@ -39,6 +39,10 @@ export default {
       textTepritche: null,
       robotNumber: Math.floor(Math.random() * 100),
       textGame: '',
+      chek: 'checkClass',
+      chek1: 'btnClassEnd',
+      inputTextNew: '',
+
       arrName: [
         {name: 'Коля', active: true},
         {name: 'Вася', active: true},
@@ -67,6 +71,14 @@ export default {
       changeAgeArr: null,
       priceHidden: true,
       priceNumberInput: "", 
+      massageForNew: "",
+      showAmassage: false,
+      newMassageFor: 'I want stady good programmer',
+      arrAddList: [],
+      addNewList: '',
+      cheking: false,
+      pop: false,
+      inputShow: true,
     } 
   },
   methods: {
@@ -220,8 +232,57 @@ export default {
       console.log(this.priceNumberInput);
       console.log(this.newProduct);
     },
-    
-  }
+
+    changeWord: function(str) {
+      return str[0].toUpperCase() + str.slice(1);
+    },
+    massageAny(e) {
+      this.massageForNew = e.target.value
+      console.log(this.massageForNew);
+    },
+    showAmassageFunc() {
+      this.showAmassage = !this.showAmassage
+    },
+    ShowBtnMassaga() {
+      alert('what do Evans?')
+      return false
+    },
+    sjklsdjfkl() {
+      this.newMassageFor = 'lol'
+    },
+    massageAnyLOL(e) {
+      this.massageForNew = e.target.value
+    },
+    AddList(e) {
+      this.addNewList = e.target.value
+    },
+    AddNewCheckList() {
+      if(this.addNewList !== '') {
+        this.arrAddList.push({name: this.addNewList, sty: false})
+        this.addNewList = ''  
+      }
+      console.log(this.arrAddList);
+      
+    },
+    DeletChecklist(item) {
+      this.arrAddList = this.arrAddList.filter(t => t != item)
+    },
+    spanInput() {
+      this.inputShow = false
+    },
+    oppoopop(e) {
+      this.inputTextNew = e.target.value
+      console.log(this.inputTextNew);
+    }
+   
+  },  
+
+  computed: {
+		reversedMessage: function() {
+			return this.massageForNew * this.massageForNew;
+		}
+	}
+  
 } 
 </script>
 
@@ -373,8 +434,29 @@ export default {
       <input v-bind:hidden="showinput" type="text" :value="changeNameArr" @input="changeNameArrFunc">
       <input v-bind:hidden="showinput" type="number" :value="changeAgeArr" @input="changeAgeArrFunc">
       <button @click="changeInfoUserArr" v-bind:hidden="showinput">add change</button>
+      <input type="number" @input="massageAny">
+      <p>{{ massageForNew }}</p>
+      <p>{{ reversedMessage }}</p>
+      <a @click="showAmassageFunc" href="">{{ showAmassage ? 'Привет' : "Пока"}}</a>
+      <button @click="ShowBtnMassaga">Show Massage</button>
+      <p v-once>{{ newMassageFor }}</p>
+      <p>{{ newMassageFor }}</p>
+      <button @click="sjklsdjfkl">change</button>
+      <p>{{ massageForNew }}</p>
+      <ul>
+        <li v-for="(item, index) in arrAddList" :key="index" >
+          <input type="checkbox" v-model="item.sty" v-bind:class="{checkClass: item.sty, po000: !item.sty}">
+            <span @dblclick="spanInput" v-bind:class="{noneClass: item.sty, yeasClass: !item.sty}">
+              <input @input="oppoopop" v-bind="inputTextNew" v-bind:hidden="inputShow"  type="text" :value="item.name">
+              {{ item.name }}
+            </span>
+          <button @click="DeletChecklist(item)" v-bind:class="chek1">X</button>
+        </li>
+      </ul>
+      <input type="text" @input="AddList" :value="addNewList">
+      <button  @click="AddNewCheckList">Add List</button>
   </div> 
-
+<span></span>
 </template>
 
 <style>
@@ -382,6 +464,24 @@ export default {
   margin: 0;
   padding: 0;
   
+}
+.po000 {
+  background: red;
+  margin-right: 10px;
+}
+.btnClassEnd {
+  margin-left: 10px;
+}
+.checkClass {
+  margin-right: 10px;
+  display: none;
+}
+.noneClass {
+  text-decoration: line-through;
+  color: rgb(121, 132, 142);
+}
+.yeasClass {
+  color: rgb(6, 238, 126);
 }
 table, th, td {
   padding: 5px;
