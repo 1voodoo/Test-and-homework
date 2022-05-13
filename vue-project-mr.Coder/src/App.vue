@@ -1,5 +1,12 @@
 <script>
+import apiVue from './api.vue';
+import VopVue from './Vop.vue';
+  
 export default {
+  components: {
+    VopVue,
+    apiVue
+  },
   data() {
     return {
       count: 0,
@@ -79,6 +86,14 @@ export default {
       cheking: false,
       pop: false,
       inputShow: true,
+      arrQuestions: [
+	      { question: 'Вопрос 1', answer: 'Ответ 1' },
+	      { question: 'Вопрос 2', answer: 'Ответ 2'},
+        { question: 'Вопрос 3', answer: 'Ответ 3'},
+        ],
+      answerQwestion: '',
+      lolinput: "right",
+      lolinput1: "wrong",
     } 
   },
   methods: {
@@ -198,39 +213,27 @@ export default {
       this.showinput = false
       this.changeNameArr = user.name
       this.changeAgeArr = user.age
-      console.log(user);
-      console.log(this.changeNameArr);
-      console.log(this.changeAgeArr);
-      //  this.userAiphone[{name: 'Коля', age: 30},{name: 'Вася', age: 40},{name: 'Петя', age: 50}]
     },
     changeNameArrFunc(e) {
       this.changeNameArr = e.target.value
-      console.log(this.changeNameArr);
     },
     changeAgeArrFunc(e) {
       this.changeAgeArr = e.target.value
-      console.log(this.changeAgeArr);
     },
     changeInfoUserArr() {
       this.userAiphone.find(t => t.name = this.changeNameArr)
       this.userAiphone.find(t => t.age = this.changeAgeArr)
-       console.log(this.userAiphone);
       this.showinput = true
     },
     DeletUserInfo(user) {
      this.userAiphone =  this.userAiphone.filter(t => t !== user)
     },
     priceClick(item, index) {
-      // this.newProduct.map(t => t.price = this.priceNumberInput)
-      // item.price = this.priceNumberInput
       this.priceNumberInput = item.price 
-      console.log(item.price);
       this.priceHidden = false
     },
     priceNumberFunc(e) {
       this.priceNumberInput = e.target.value
-      console.log(this.priceNumberInput);
-      console.log(this.newProduct);
     },
 
     changeWord: function(str) {
@@ -273,7 +276,12 @@ export default {
     oppoopop(e) {
       this.inputTextNew = e.target.value
       console.log(this.inputTextNew);
-    }
+    },
+    answerQwestionFunck(e) {
+      this.answerQwestion = e.target.value
+      console.log(this.answerQwestion); 
+    },
+
    
   },  
 
@@ -288,6 +296,8 @@ export default {
 
 <template>
   <div class="page">
+    <apiVue/>
+    <VopVue/>
     <p>{{ count }}</p>
     <div class="contaynerBtn">
       <button class="btn" @click="count ++">+</button>
@@ -311,7 +321,6 @@ export default {
     </ul>
     <button @click="ShowArr">{{ show3 ? 'Скрыть' : 'Показать' }}</button>
     <p v-if="hello">привет {{ name }}</p> 
-    <p v-else="!hello">Пока {{ name }}</p> 
     <p v-if="day == 1">ПН</p>
     <p v-if="day == 2">ВТ</p>
     <p v-if="day == 3">СР</p>
@@ -455,6 +464,19 @@ export default {
       </ul>
       <input type="text" @input="AddList" :value="addNewList">
       <button  @click="AddNewCheckList">Add List</button>
+      <ul>
+        <li v-for="(item, index) in arrQuestions" :key="index">
+          {{ item.question }}
+            <input
+              
+              v-bind:class="{lolinput, lolinput1}" 
+              type="text" 
+              v-on:keyup.enter="answerQwestionFunck" v-bind="answerqwestion"
+              placeholder="Ответ"
+            >
+
+        </li>
+      </ul>
   </div> 
 <span></span>
 </template>
@@ -464,6 +486,12 @@ export default {
   margin: 0;
   padding: 0;
   
+}
+.right {
+  border: 2px solid green;
+}
+.wrong {
+  border: 2px solid rgb(247, 3, 3);
 }
 .po000 {
   background: red;
