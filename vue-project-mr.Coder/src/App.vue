@@ -1,11 +1,13 @@
 <script>
 import apiVue from './api.vue';
+import NewFileVue from './NewFile.vue';
 import VopVue from './Vop.vue';
   
 export default {
   components: {
     VopVue,
-    apiVue
+    apiVue,
+    NewFileVue
   },
   data() {
     return {
@@ -151,15 +153,15 @@ export default {
     inputTemritche(e) {
       this.textTepritche =  e.target.value 
       console.log(this.robotNumber);
-      if(Number(this.textTepritche) > Number(this.robotNumber)) {
+      if (Number(this.textTepritche) > Number(this.robotNumber)) {
         this.textGame = 'Число меньше'
         
       }
-      if(Number(this.textTepritche) < Number(this.robotNumber)) {
+      if (Number(this.textTepritche) < Number(this.robotNumber)) {
         this.textGame = 'Число больше'
         
       }
-      if(Number(this.textTepritche) === Number(this.robotNumber)) {
+      if (Number(this.textTepritche) === Number(this.robotNumber)) {
         this.textGame = 'Вы выйграли'
         this.robotNumber = Math.floor(Math.random() * 100)
         this.textTepritche = ''
@@ -282,7 +284,6 @@ export default {
       console.log(this.answerQwestion); 
     },
 
-   
   },  
 
   computed: {
@@ -290,12 +291,12 @@ export default {
 			return this.massageForNew * this.massageForNew;
 		}
 	}
-  
 } 
 </script>
 
 <template>
   <div class="page">
+    <NewFileVue name="Вася" surname="Рогов" v-bind:lol="age" v-bind:arr01="arrQuestions" />
     <apiVue/>
     <VopVue/>
     <p>{{ count }}</p>

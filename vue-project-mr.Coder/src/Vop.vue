@@ -9,9 +9,9 @@
         <button @click="count ++">Add plus</button>
         <button @click="count --">Add minus</button>
     </div>
-    <p v-for="(item, index) in spreadableOne" :key="index">{{index}} {{item }} </p>
-    <p v-for="(item, index) in spreadableTwo" :key="index">{{item}}</p>
-    <p v-for="(item, index) in spredarrThree" :key="index">{{item}}</p>
+    <p v-for="(item, index) in spreadableOne" :key="index">{{ index }} {{ item }} </p>
+    <p v-for="(item, index) in spreadableTwo" :key="index">{{ item }}</p>
+    <p v-for="(item, index) in spredarrThree" :key="index">{{ item }}</p>
   </div>
 
 </template>
