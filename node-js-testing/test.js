@@ -108,9 +108,39 @@ setTimeout(() => {
 //     if(error) console.log(error);
 //     console.log(data.size / 1024 /1024 /1024);
 // });
-// const lol = fs.statSync('folder');
+const nameFolder = 'folder';
 // console.log(lol);
-fs.readdir('folder/inFolder', (error, data) => {
-    if(error) console.log(error);
-   console.log(data);
-});
+// let folderName = 'folder'
+// fs.readdir(folderName, (error, data) => {
+//     if(error) console.log(error);
+//     console.log(data);
+// for(let file of data) {
+//     fs.stat(folderName + '/' + file, (error, stats) => {
+//         if(error) throw error;
+//         if(stats.isDirectory()) {
+//             console.log(file);
+//         }
+//     })
+// }
+// });
+allFiles(nameFolder);
+
+function allFiles(nameFolder) {
+    fs.readdir(nameFolder, (error, data) => {
+        if(error) throw error;
+        for (let file of data) {
+            fs.stat(nameFolder + "/" + file, (error, stats) => {
+                if (error) throw error;
+                if(stats.isDirectory()) {
+                    console.log('folder:',file);
+                }
+                if(!stats.isDirectory()) {
+                    console.log('file:',file);
+                }
+                else {
+                    allFiles(nameFolder + '/' + file);
+                }
+            });
+        };
+    });
+}
