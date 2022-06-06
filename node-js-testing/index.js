@@ -9,21 +9,57 @@ console.log('Server Start');
 
 http.createServer(function(request, response) {
     if(request.url != '/favicon.ico'){
-        fs.readFile('pages/' + request.url + '.html', (error, data) => {
-            response.setHeader["{ 'Content-Tupe': 'text/html' }"];
-            if(!error) {
+        if(request.url.endsWith('.css')) {
+            fs.readFile('pages/style.css', (error, data) => {
+                if(error) throw error;
+                response.setHeader["{ 'Content-Tupe', 'text/css' }"];
                 response.statusCode = 200;
                 response.write(data);
                 response.end();
-            } else {
-                fs.readFile('pages/404.html', (err, data) => {
-                    if(err) console.log(err);;
-                        response.statusCode = 404;
-                        response.write(data);
-                        response.end();
-                    
-                })
-            }
-        });  
+            });
+            
+        }
+        else if(request.url.endsWith('.js')) {
+            fs.readFile('newFile.js', (error, data) => {
+                if(error) throw error;
+                response.setHeader["{ 'Content-Tupe', 'text/js' }"];
+                response.statusCode = 200;
+                response.write(data);
+                response.end();
+            });
+        }
+        else {
+            getPage(request.url, response);
+        }
     };
 }).listen(8888);
+
+function getPage(name, response, statusCode = 200) {
+    if(name === '/') {
+        name = 'index';
+    };
+
+    fs.readFile('pages/' + name + '.html', 'utf-8', (error, data) => {
+        if(!error) {
+            fs.readFile('elems/menu.html', 'utf-8', (error, menu) => {
+                if(error) throw error;
+                data = data.replace(/\{\{menu\}\}/g, menu);
+                fs.readFile('elems/footer.html', 'utf-8', (error, footer) => {
+                    if(error) throw error;
+                    data = data.replace(/\{\{footer\}\}/g, footer);
+                    
+                    response.setHeader["{ 'Content-Tupe': 'text/html' }"];
+                    response.statusCode = statusCode;
+                    response.write(data);
+                    response.end();
+                });
+            });
+        } else {
+            if (name != '404') {
+                getPage('404', response, 404)
+            } else {
+                throw error;
+            }
+        }
+    });
+};
