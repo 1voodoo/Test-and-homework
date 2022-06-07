@@ -28,6 +28,15 @@ http.createServer(function(request, response) {
                 response.end();
             });
         }
+        else if(request.url.endsWith('.jpg')) {
+            fs.readFile('images.jpg', (error, data) => {
+                if(error) throw error;
+                response.setHeader["{ 'Content-Tupe', 'image/jpg' }"];
+                response.statusCode = 200;
+                response.write(data);
+                response.end();
+            });
+        }
         else {
             getPage(request.url, response);
         }
@@ -41,9 +50,9 @@ function getPage(name, response, statusCode = 200) {
 
     fs.readFile('pages/' + name + '.html', 'utf-8', (error, data) => {
         if(!error) {
-            fs.readFile('elems/menu.html', 'utf-8', (error, menu) => {
+            fs.readFile('elems/menu.html', 'utf-8', (error, elems) => {
                 if(error) throw error;
-                data = data.replace(/\{\{menu\}\}/g, menu);
+                data = data.replace(/\{\{menu\}\}/g, elems);
                 fs.readFile('elems/footer.html', 'utf-8', (error, footer) => {
                     if(error) throw error;
                     data = data.replace(/\{\{footer\}\}/g, footer);
@@ -53,8 +62,9 @@ function getPage(name, response, statusCode = 200) {
                     response.write(data);
                     response.end();
                 });
-            });
-        } else {
+            });    
+        } 
+        else {
             if (name != '404') {
                 getPage('404', response, 404)
             } else {

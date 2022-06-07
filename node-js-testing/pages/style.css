@@ -1,3 +1,13 @@
 h1 {
     color: aquamarine;
 }
+.foto {
+    border-radius: 50%;
+}
+.active:hover {
+    color: aquamarine;
+    text-decoration: underline;
+}
+a {
+    text-decoration: none;
+} 
