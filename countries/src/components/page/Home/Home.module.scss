@@ -1,0 +1,121 @@
+.home {
+    padding-top: 40px;
+    max-width: 1140px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    
+}
+.inputContainerIn {
+  position: relative;
+  width: 250px;
+}
+.inputContaine {
+  max-width: 1140px;
+  margin: 0 auto;
+  & .input {
+    width: 100%;
+    height: 20px;
+    padding: 0 0 0 15px;
+    border: none;
+    border-bottom: 2px solid white;
+    background: none;
+    outline: none;
+    margin-top: 30px;
+    font-size: 20px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color: white;
+    &::placeholder {
+      color: white;
+      font-size: 20px;
+      font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    }
+  }
+}
+.autoComplit {
+  background: white;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  list-style: none;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  box-shadow: 0 0 10px rgba(215, 213, 213, 0.5);
+  z-index: 1;
+  max-height: 240px;
+  height: auto;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    width: 7px;
+    background-color: rgb(218, 210, 210);
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #223c50;
+  }
+
+  .autoComplitItem {
+    padding: 10px;
+    font-size: 15px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    &:hover {
+      background: gray;
+      cursor: pointer;
+      transition: cubic-bezier(1, 0, 0, 1) 0.2s all;
+    }
+    & span {
+      width: 30px;
+      height: 30px;
+    }
+     & img {
+      width: 100%;
+    }
+  }
+}
+
+.tittle {
+    font-size: 30px;
+    color: whitesmoke;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+.container {
+  border-radius: 2px;
+    width: 250px;
+    height: 250px;
+    background: white;
+    box-shadow: 0 0 10px rgba(215, 213, 213, 0.5);
+    &:hover {
+      transform: scale(1.2); /* Увеличиваем масштаб */
+      transition: 1s;
+    }
+    .containerDiscriptiom {
+      padding: 0 10px 10px 10px;
+      margin-top: 10px;
+    }
+    & h1 {
+        font-size: 20px;
+        color: rgb(0, 0, 0);
+        text-align: center;
+        font-family: 'Courier New', Courier, monospace;
+    }
+    & img {
+        box-sizing: border-box;
+        height: 130px;
+        width: 100%;
+    }
+    & p {
+      font-size: 15px;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    & span {
+      font-size: 13px;
+      font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+}
